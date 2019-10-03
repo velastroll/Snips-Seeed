@@ -20,7 +20,7 @@ print("telefono: ", cache["telephone"])
 
 def intent_received(hermes, intentMessage):
 
-    if intentMessage.intent.intent_name == 'velastroll:contacto':
+    if intentMessage.intent.intent_name == 'alvvela:contacto':
         telephone = cache["telephone"]
         sentence = 'El numero de telefono del ayuntamiento es el ' + telephone
     else:
