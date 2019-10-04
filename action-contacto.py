@@ -33,7 +33,7 @@ def intent_received(hermes, intentMessage):
             sentence = 'El correo electrónico del ayuntamiento es el ' + payload
         elif intentMessage.slots.movil:
             payload = cache["telephone"]
-            sentence = 'El ayuntamiento no tiene número móvil de momento, pero su telefono fijo es el ' + payload
+            sentence = 'El ayuntamiento no tiene número móvil de momento, pero su teléfono fijo es el ' + payload
         else:
             sentence = "Vaya, de momento no tengo esa información."
     # nlu cannot recognise the code of below
