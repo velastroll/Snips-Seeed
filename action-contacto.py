@@ -20,18 +20,23 @@ print("telefono: ", cache["telephone"])
 
 def intent_received(hermes, intentMessage):
 
-    if intentMessage.intent.intent_name == 'alvvela:contacto':
+    snips_account = cache["snips-console"]
+    if intentMessage.intent.intent_name == (snips_account + ':contacto'):
         if intentMessage.slots.fax:
-            fax = cache["fax"]
-            sentence = 'El número de faxs es el ' + fax
+            payload = cache["fax"]
+            sentence = 'El número de faxs es el ' + payload
         elif intentMessage.slots.telefono:
-            telephone = cache["telephone"]
-            sentence = 'El número de teléfono del ayuntamiento es el ' + telephone
+            payload = cache["telephone"]
+            sentence = 'El número de teléfono del ayuntamiento es el ' + payload
         elif intentMessage.slots.email:
-            email = cache["email"]
-            sentence = 'El correo electrónico del ayuntamiento es el ' + email
+            payload = cache["email"]
+            sentence = 'El correo electrónico del ayuntamiento es el ' + payload
+        elif intentMessage.slots.movil:
+            payload = cache["telephone"]
+            sentence = 'El ayuntamiento no tiene número móvil de momento, pero su telefono fijo es el ' + payload
         else:
             sentence = "Vaya, de momento no tengo esa información."
+    # nlu cannot recognise the code of below
     else:
         sentence = "Lo siento, no te he entendido."
     
