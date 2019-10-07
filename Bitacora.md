@@ -71,6 +71,13 @@ Al parecer, el problema era ese, que nuestro prototipo tenía una version que a�
 
 ## Sábado 5 de Octubre
 Insertamos en el asistente más posibles casos, al igual que se obtiene la cuenta de la consola de snips a través de la chaché: de esta forma, podemos modificar todos la cuenta de todos los actions que creemos desde el mismo fichero, ahorrándonos trabajo.
+Se ha cambiado el hotword de "Hey snips" por "Pregonero", siguiento la [documentación](https://docs.snips.ai/articles/platform/wakeword/personal) de la web.
+Tras realizar los pasos se ha conseguido que detecte la esta palabra para levantarse una vez de 15 intentos, por lo que no es viable.
+
+Se procederá a intentar de nuevo la configuración en un espacio más aislado y con una mejor vocalización.
+
+En caso de obtener los mismos resultado, se procederá a seguir un [enlace externo](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#links) con el que también se puede configurar el hotword.
+
 
 📍 Milestones:
 ---
@@ -79,5 +86,5 @@ Insertamos en el asistente más posibles casos, al igual que se obtiene la cuent
  - [x] Conseguir que hable inglés - **01/10/2019**
  - [x] Conseguir que hable - **01/10/2019**
  - [x] Conseguir que hable castellano - **04/10/2019**
+ - [x] Cambiar hotword - *06/10/2019** _Ratio de acierto bajo_
  - [ ] Tarjeta sim en vez de wifi -
- - [ ] Cambiar hotword - 
