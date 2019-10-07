@@ -1,5 +1,4 @@
-🧠 Pregonero's story
----
+# 🧠 Pregonero's story
 
 ## 📦 Init day
 Se obtuvo el dispositivo asisente, pero al parecer no detectaba la voz.
@@ -78,6 +77,13 @@ Se procederá a intentar de nuevo la configuración en un espacio más aislado y
 
 En caso de obtener los mismos resultado, se procederá a seguir un [enlace externo](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#links) con el que también se puede configurar el hotword.
 
+## Domingo 6 de Octubre
+Se procedió a instalar en el asistente el hotword no oficial, entrenando al asistente con varias voces de distintos géneros, pero no se fue capaz de dejarlo funcionando.
+Hay que probar de nuevo siguiendo todos los pasos sin tener ninguna versión de snips instalada en la tarjeta SD, pero para ello hay que realizar una copia de seguridad de el dispositivo ya funcionando.
+
+Después, se vovlió a instalar el hot word de manera oficial, pero esta vez respondía a la secuencia _"Hey pregonera"_, aunque con un ratio bajo también. Se le subió la sensibilidad hasta 0.7, algo que no es recomendado ya que los valores deben ir entre 0.4 y 0.6, y su ratio de aciertos aumentó 3/5, pero con secuencias de golpes de la misma intensitad, el asistente también responde.
+Puede valer como prototipo, pero **NO** para producción, por eso es importante hacer funcionar la manera no-oficial.
+
 
 📍 Milestones:
 ---
@@ -86,5 +92,5 @@ En caso de obtener los mismos resultado, se procederá a seguir un [enlace exter
  - [x] Conseguir que hable inglés - **01/10/2019**
  - [x] Conseguir que hable - **01/10/2019**
  - [x] Conseguir que hable castellano - **04/10/2019**
- - [x] Cambiar hotword - *06/10/2019** _Ratio de acierto bajo_
+ - [x] Cambiar hotword - **06/10/2019** _Ratio de acierto bajo_
  - [ ] Tarjeta sim en vez de wifi -
