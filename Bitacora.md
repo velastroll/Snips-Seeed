@@ -84,6 +84,46 @@ Hay que probar de nuevo siguiendo todos los pasos sin tener ninguna versión de 
 Después, se vovlió a instalar el hot word de manera oficial, pero esta vez respondía a la secuencia _"Hey pregonera"_, aunque con un ratio bajo también. Se le subió la sensibilidad hasta 0.7, algo que no es recomendado ya que los valores deben ir entre 0.4 y 0.6, y su ratio de aciertos aumentó 3/5, pero con secuencias de golpes de la misma intensitad, el asistente también responde.
 Puede valer como prototipo, pero **NO** para producción, por eso es importante hacer funcionar la manera no-oficial.
 
+## Jueves 10 de Octubre
+Se ha intentado configurar el modem con la tarjeta de datos pero sin conseguir que funcionase.
+Hablar con JVegas para ver si está activada, o qué puede ser.
+
+## Viernes 11 de Octubre
+LA tarjeta sim no estaba activada. Recibo por rocket los valores para activarla, aunque aún no se ha configurado ni probado.
+
+## Domingo 13 de Octubre
+Probamos a reinstalar todo en la raspberry:
+1- Instalamos la versión Raspbian Stretch Lite: la versión buster no es compatible con snips ni con el customHotword.
+2- Configuramos el hotword siguiendo los pasos.
+3- Instalamos snips a través de sam.
+4- Configuramos los valores del asistente de audio con la siguiente configuración:
+**/etc/asound.conf**: 
+```
+pcm.!default {
+    type asym
+    playback.pcm {
+        type plug
+        slave.pcm "hw:1,0"
+    }
+    capture.pcm "multi"
+}
+
+pcm.multi {
+    type plug
+    slave.pcm "multiapps"
+}
+
+pcm.multiapps {
+    type dsnoop
+    slave.pcm "hw:1,0"
+    ipc_key 666666
+}
+```
+Hay que tener cuidado, ya que al instalar de vez en cuando la tarjeta de audio, este archivo vuelve a su configuración inicial, de modo que deja de escucharnos, por lo que hay que volver a ponerle esta configuración.
+
+_Tip: Puede ser interesante meterle un script de modo que si al actualizar remotamente el asistente, se vuelva a esta configuración en vez de a la de por defecto._
+
+
 
 📍 Milestones:
 ---
@@ -92,5 +132,5 @@ Puede valer como prototipo, pero **NO** para producción, por eso es importante 
  - [x] Conseguir que hable inglés - **01/10/2019**
  - [x] Conseguir que hable - **01/10/2019**
  - [x] Conseguir que hable castellano - **04/10/2019**
- - [x] Cambiar hotword - **06/10/2019** _Ratio de acierto bajo_
- - [ ] Tarjeta sim en vez de wifi -
+ - [x] Cambiar hotword - **13/10/2019**
+ - [ ] Tarjeta sim en vez de wifi 
