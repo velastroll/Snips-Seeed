@@ -258,7 +258,18 @@ Se ha dejado medio planteado para su implantación, al igual que se ha levantado
 
 Esta desarrollado aunque no funcione de momento, pero porque se dejará para más adelante, para seguir la lista de milestones por orden.
 
+## Sábado 19 de Octubre
 
+Después de organizar el trabajo y redactar los informes anteriores, procedo a preparar una actividad que automáticamente recopile los datos.
+Para ello se ha creado un singleton que es ejecutado al iniciar el servidor, que hará de caché. Desde él, se le puede pedir recargar cierto pueblo, y en un futuro, otras acciones y labores que requieran un acceso a internet.
+
+En cuanto a la automatización de tareas por parte del servidor, se ha encontrado que toda raspberry cuenta con `crontab`, que srive para automatizar tareas. Es muy util esto para estableer tareas que se ejecuten cada ves que se reinicie el dispositivo.
+
+En este caso, nos interesa que se ejecute el script que realice las labores de `I'M ALIVE!` así que se establecerá la lógica de estas peticiones, y se podnrán en marcha con:
+
+```zsh
+@reboot python /home/pi/assistant-logic.py &
+```
 
 # 📍 Milestones
 
@@ -269,7 +280,7 @@ Esta desarrollado aunque no funcione de momento, pero porque se dejará para má
 - [x] Cambiar hotword - **13/10/2019**
 - [ ] Tarjeta sim en vez de wifi.
 - [ ] Estable el audio con fuentes de alimentación diferentes.
-- [ ] Crear una caché en el servidor para unas respuestas más rapidas.
+- [X] Crear una caché en el servidor para unas respuestas más rapidas. **19/10/2019**
 - [ ] Configurar servidor de la escuela.
 - [ ] Automatizar las peticiones `I'm alive!` del dispositivo.
 - [ ] DB para guardar el estado de cada dispositivo.
