@@ -7,7 +7,7 @@ from urls_ayto import urls_dict
 import json
 from datetime import datetime
 
-cache_file = "cache.json"   # sets the name of the cache file
+cache_file = "contact_cache.json"   # sets the name of the cache file
 
 ### obtain the html content
 
@@ -30,7 +30,8 @@ cache["fax"] = the_fax_number.replace(" ",", ",2)
 cache["email"] = soup.find("div", "email").text.strip()
 cache["URL"] = soup.find("div", "urlExterna").text.strip()
 
-# print("CACHE dict >>>", cache)
+
+
 
 ### save the cache dict on file as a json
 with open (cache_file, "w") as write_file:
