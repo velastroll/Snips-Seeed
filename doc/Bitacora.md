@@ -271,6 +271,187 @@ En este caso, nos interesa que se ejecute el script que realice las labores de `
 @reboot python /home/pi/assistant-logic.py &
 ```
 
+## Domingo 20 de Octubre
+
+Organizo bien todos los repositorios e intento que se ejecute el script de inicio con crontable, pero no parece funcionar bien.
+El script que se envia cada 5 minutos sí que funciona, y tendré que modificarlo para usarlo de controlador y dotarlo de funciones.
+
+Me doy cuenta que **el dispositivo no responde si hacemos un reboot**.
+
+Creo las clases que vamos a utilizar en la base de datos y también creo un frontend para el login con vuejs.
+No puedo probarlo por que el servidor no permite acceder a él desde fuera, asi que mando un correo para que me lo abran.
+
+
+## Lunes 21 de Octubre
+
+Me abren el puerto:
+65141 --> ssh
+65142 --> 80 para el front
+65143 --> 8082 para el core
+
+Despliego el login con unos últimos retoques del front y ya es accesible.
+
+## Martes 22 de Octubre
+Intento instalar la [base de datos](https://tecadmin.net/install-postgresql-server-on-ubuntu/) en el servidor, para poder desplegar el core:
+
+1. Obtengo la clave y recursos de postgres:
+
+```zsh
+$ sudo apt-get install wget ca-certificates
+.... obtengo los certificados
+
+$ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+.... añado la clave de postgres
+
+$ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+.... lo configuro
+```
+
+2. Instalo el servidor:
+
+```zsh
+$ sudo apt-get update
+.... actualizo los paquetes
+
+$ sudo apt-get install postgresql postgresql-contrib
+.... los instalo
+```
+
+3. Accedo a él:
+
+```zsh
+$ sudo su - postgres
+.... entro con el usuario de postgres
+
+$ psql
+.... me conecto a la consola
+```
+
+Ahora procedo a crear una base de datos:
+
+```psql
+postgres@psql> CREATE DATABASE assistant;
+```
+
+Me responde: _CREATE DATABASE_ por lo que se ha creado. Podemos verla con `\l`.
+Y podemos entrar a ella con:
+
+```psql
+postgres@psql> assistant
+```
+
+La creación de todas las tablas se la vamos a dejar a Kotlin, con el framework de exposed, que es muy útil.
+Una vez visto esto, procedemos a desplegar el core en el servidor.
+
+Para poder conectar nuestro core con la base de datos necesitamos un usuario y contraseña, para ello redefinimos la contraseña de postgres entrado dentro y alterando el usuario:
+
+```psql
+postgres@psql> ALTER USER postgres PASSWORD 'nueva_contraseña';
+```
+
+En el core, ponemos la configuración de la base de datos y el puerto específico, que en este caso es el 5432, el que se usa por defecto en postgres.
+
+Lanzamos el core y vemos que funciona perfectamente haciendo la petición en local:
+
+```zsh
+$ curl localhost:8082/test/SANVICENTEDELPALACIO
+{
+  "status": "ALIVE",
+  "places": [
+    {
+      "address": {
+        "name": "Ayuntamiento de San Vicente del Palacio",
+        "street": "Plaza Mayor, 1.",
+        "postalcode": "47493",
+        "city": "San Vicente del Palacio. Valladolid"
+      },
+      "telephone": "+34 983 825 006",
+      "fax": "+34 983 825 056",
+      "email": "ayuntamiento@sanvicentedelpalacio.gob.es",
+      "urlExterna": "http://sanvicentedelpalacio.gob.es"
+    }
+  ]
+}
+```
+
+Pero no conseguimos respuesta en `http://virtual.lab.infor.uva.es:65143/test/SANVICENTEDELPALACIO`, por lo que aún no nos han configurado la pasarela para acceder desde fuera.
+
+Se retrasa la configuración del login y del frontend debido a que no se puede establecer la conexión.
+
+## Miércoles 23 de Octubre
+
+AL parece le había solicitado otro puerto, por lo que lo estaba indexando al que no era. Ya me lo ha cambiado al que era y sí que funciona.
+
+Como ya ponemos comprobar la autenticación, generaremos el esquema de estilo de las respuestas y peticiones que lanzaremos:
+  > **[get] url:65143/alive**
+  
+  - response:
+
+  ```zsh
+  {
+    status : 200,
+    action : "ALIVE",
+    data : {
+      next_action: null, # null / next action
+      config: JSON # configuration for the next_action
+    }
+  }
+  ```
+
+  > **[post] url:65143/towns/{town}**
+
+- **post: /towns/{town}**:
+  - request:
+
+  ```zsh
+  {
+    data : {
+      from: String, # date time in ISO: YYYY-MM-DDTHH-MM-SS
+    }
+  }
+  ```
+
+  - response:
+
+  ```zsh
+  {
+    status: 200,
+    data : {
+      content : [
+        {
+          address: {
+            name: String,
+            street: String,
+            postalcode: Int,
+            city: String
+          },
+          telephone: String,
+          fax: String,
+          email: String,
+          urlExterna: String
+        }
+      ]
+    }
+  }
+  ```
+
+  Con el puerto ya establecido, intento una conexión entre el dispositivo y el servidor, funcionando de manera correcta, pero no consigo que se inicie automaticamente al reiniciar el dispositivo.
+
+  Tras dos horas de intenso trabajo y búsqueda de información, acabo encontrar [por qué no funciona](https://www.digitalocean.com/community/questions/unable-to-execute-a-python-script-via-crontab-but-can-execute-it-manually-what-gives) **cron**, y es, al aprecer, que no sabe leer bien las rutas.
+
+  También, hago que se inicie automáticamente el servicio de cron, añadiendo en `/etc/rc.local`, antes del '`exit 0`' la siguiente línea.
+  
+  ```
+  /etc/init.d/cron start
+  ```
+
+  Procedo a utilizar el siguiente código (entrando con `$ crontab -e`), con el que finalmente sabe situarse, y funcionar:
+  
+  ```cron
+  @reboot sleep 60; cd /home/pi/assistant.task/src/ ; /usr/bin/python /home/pi/assistant.task/src/assistant-alive.py & > logfile.txt"
+  ```
+
+
 # 📍 Milestones
 
 - [x] Conseguir que detecte lo escuchado - **30/09/2019**
