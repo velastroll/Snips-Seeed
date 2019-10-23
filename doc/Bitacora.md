@@ -462,11 +462,13 @@ Como ya ponemos comprobar la autenticación, generaremos el esquema de estilo de
 - [ ] Tarjeta sim en vez de wifi.
 - [ ] Estable el audio con fuentes de alimentación diferentes.
 - [X] Crear una caché en el servidor para unas respuestas más rapidas. **19/10/2019**
-- [ ] Configurar servidor de la escuela.
-- [ ] Automatizar las peticiones `I'm alive!` del dispositivo.
+- [X] Configurar servidor de la escuela. **20/10/2019**
+- [X] Automatizar las peticiones `I'm alive!` del dispositivo. **23/10/2019**
+- [ ] Generar un usuario y contraseña para cada dispositivo.
+- [ ] protocolo OAuth.
 - [ ] DB para guardar el estado de cada dispositivo.
 - [ ] FRONTEND para ver el estado de cada dispositivo.
-- [ ] protocolo OAuth.
+- [ ] Servidor HTTPS
 - [ ] Registro de estadísticas en la parte del dispositivo.
 - [ ] Envío de estadísticas al servidor.
 - [ ] Mostrar estadísticas en la web.
