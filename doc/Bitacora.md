@@ -11,6 +11,8 @@ El asistente detectaba bien el intent, al igual que los slots.
 
 Intento conectar el asistente con el repositorio, pero introduzco el repositorio en la carpeta incorrecta.
 
+---
+
 ## Martes 1 de Octubre
 
 Tras una reunión, el tutor JVegas informa acerca de que es al propio asistente desde la consola de snips, desde donde hay que asignar a la aplicación creada una seria de acciones, vinculando la dirección del repositorio alojado en GitHub.
@@ -26,6 +28,8 @@ Pero no, los slots se convierten en clave en pares diccionario valor, de modo qu
 `slot = intentMessage.slots.nombreDelSlot`
 
 Tras esto, el asistente funciona, pero el único fallo que le queda es que la voz tiene acento inglés y lee los números en ese idioma, lo que no nos es útil.
+
+---
 
 ## Miercoles 2 de Octubre y Jueves 3 de Octubre
 
@@ -49,6 +53,8 @@ Volvemos a bajar la imagen de Snips-Seeed, la volvemos a cargar, la actualizamos
 Nos metemos a ver las versiones de Snips y vemos que evidentemente acaba de salir una nueva release, y que posiblemente el asistente estuviese fallando porque antes no estaba disponible para nosotros la actualización.
 
 Lo dejamos actualizando, ya que tarda demasiado. (+30min)
+
+---
 
 ## Viernes 4 de Octubre
 
@@ -86,6 +92,8 @@ $ sam service start snips-skill-server
 Tras recibir el prototipo del tutor, procedo a probar con mi asistente creado anteriormente, en castellano y con diversos slots del mismo tipo en un único intent. Resultado: funciona perfectamente.
 Al parecer, el problema era ese, que nuestro prototipo tenía una version que aún no habia sido actualizada porque no había sido desplegada, y no funcionaba con el asistente, que sí que había sido actualizado.
 
+---
+
 ## Sábado 5 de Octubre
 
 Insertamos en el asistente más posibles casos, al igual que se obtiene la cuenta de la consola de snips a través de la chaché: de esta forma, podemos modificar todos la cuenta de todos los actions que creemos desde el mismo fichero, ahorrándonos trabajo.
@@ -96,6 +104,8 @@ Se procederá a intentar de nuevo la configuración en un espacio más aislado y
 
 En caso de obtener los mismos resultado, se procederá a seguir un [enlace externo](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#links) con el que también se puede configurar el hotword.
 
+---
+
 ## Domingo 6 de Octubre
 
 Se procedió a instalar en el asistente el hotword no oficial, entrenando al asistente con varias voces de distintos géneros, pero no se fue capaz de dejarlo funcionando.
@@ -104,14 +114,20 @@ Hay que probar de nuevo siguiendo todos los pasos sin tener ninguna versión de 
 Después, se vovlió a instalar el hot word de manera oficial, pero esta vez respondía a la secuencia _"Hey pregonera"_, aunque con un ratio bajo también. Se le subió la sensibilidad hasta 0.7, algo que no es recomendado ya que los valores deben ir entre 0.4 y 0.6, y su ratio de aciertos aumentó 3/5, pero con secuencias de golpes de la misma intensitad, el asistente también responde.
 Puede valer como prototipo, pero **NO** para producción, por eso es importante hacer funcionar la manera no-oficial.
 
+---
+
 ## Jueves 10 de Octubre
 
 Se ha intentado configurar el modem con la tarjeta de datos pero sin conseguir que funcionase.
 Hablar con JVegas para ver si está activada, o qué puede ser.
 
+---
+
 ## Viernes 11 de Octubre
 
 LA tarjeta sim no estaba activada. Recibo por rocket los valores para activarla, aunque aún no se ha configurado ni probado.
+
+---
 
 ## Domingo 13 de Octubre
 
@@ -148,6 +164,8 @@ pcm.multiapps {
 Hay que tener cuidado, ya que al instalar de vez en cuando la tarjeta de audio, este archivo vuelve a su configuración inicial, de modo que deja de escucharnos, por lo que hay que volver a ponerle esta configuración.
 
 _Tip: Puede ser interesante meterle un script de modo que si al actualizar remotamente el asistente, se vuelva a esta configuración en vez de a la de por defecto._
+
+---
 
 ## Martes 15 de Octubre
 
@@ -191,6 +209,8 @@ Activo el prettyPrinting de GSon que simplemente hará que si imprimimos el JSon
 }
 ```
 
+---
+
 ## Miercoles 16 de Octubre
 
 Esto va cogiendo forma.
@@ -210,6 +230,8 @@ Veo que existe un repositorio donde se comunican con el dispositivo de manera es
 De modo que se podría intentar que dependiendo de la información que haya dicho el usuario, el dispositivo entre en un estado en el que responda, ejecute para sí mismo [hotword] y se ponga a escuchar. Entonces, en la respuesta del dispotivo podría preguntar algo al usuario, y mantenerse escuchando a la respuesta del usuario, repitiendo el proceso y manteniendo una conversación, por ejemplo, de configuración.
 
 Este proceso sería muy laborioso pero muy interesante.
+
+---
 
 ## Jueves 17 de Octubre
 
@@ -236,6 +258,8 @@ En la charla, el dispositivo no consigue levantar el servicio del audio, lo que 
 
 Al llegar a casa, vuelve a funcionar bien sin hacer nada. Se investiga acerca de las posibles causas, ya fuese por la conexión o no a internet, pero no se consigue que vuelva a fallar. El fallo, por tanto, puede haber sido debido a que la fuente de alimentación no tuviese el voltaje necesario. así que habría que probar de nuevo en un futuro, en el despacho del profesor con su fuente de alimentación.
 
+---
+
 ## Viernes 18 de Octubre
 
 Se ha intentado buscar información acerca de OAuth y para ver como funciona.
@@ -258,6 +282,8 @@ Se ha dejado medio planteado para su implantación, al igual que se ha levantado
 
 Esta desarrollado aunque no funcione de momento, pero porque se dejará para más adelante, para seguir la lista de milestones por orden.
 
+---
+
 ## Sábado 19 de Octubre
 
 Después de organizar el trabajo y redactar los informes anteriores, procedo a preparar una actividad que automáticamente recopile los datos.
@@ -271,6 +297,8 @@ En este caso, nos interesa que se ejecute el script que realice las labores de `
 @reboot python /home/pi/assistant-logic.py &
 ```
 
+---
+
 ## Domingo 20 de Octubre
 
 Organizo bien todos los repositorios e intento que se ejecute el script de inicio con crontable, pero no parece funcionar bien.
@@ -281,6 +309,7 @@ Me doy cuenta que **el dispositivo no responde si hacemos un reboot**.
 Creo las clases que vamos a utilizar en la base de datos y también creo un frontend para el login con vuejs.
 No puedo probarlo por que el servidor no permite acceder a él desde fuera, asi que mando un correo para que me lo abran.
 
+---
 
 ## Lunes 21 de Octubre
 
@@ -378,6 +407,8 @@ Pero no conseguimos respuesta en `http://virtual.lab.infor.uva.es:65143/test/SAN
 
 Se retrasa la configuración del login y del frontend debido a que no se puede establecer la conexión.
 
+---
+
 ## Miércoles 23 de Octubre
 
 AL parece le había solicitado otro puerto, por lo que lo estaba indexando al que no era. Ya me lo ha cambiado al que era y sí que funciona.
@@ -450,6 +481,46 @@ Como ya ponemos comprobar la autenticación, generaremos el esquema de estilo de
   ```cron
   @reboot sleep 60; cd /home/pi/assistant.task/src/ ; /usr/bin/python /home/pi/assistant.task/src/assistant-alive.py & > logfile.txt"
   ```
+
+---
+
+## Jueves 24 de Octubre
+
+Como ya funciona correctamente lo de ejecutar un script al reiniciarse, toca hacer el planning de **QUÉ se ejecuta**, y en **QUÉ orden**.
+
+- El usuario y contraseña de la raspberry _[hidden]_. De esta forma, se podrá descifrar en el lado del servidor y servirá para todas.
+
+  1.  [LOGIN] : intenta iniciar sesión.
+
+      [LISTENER] : Escucha al servidor MQTT apuntando lo que salga que no sea cogido por ningun intent _(no estoy seguro de que aparezca si no hay intent)_
+
+``` zsh
+[Login] Recibe HTTP 200:  inicia [RETRIEVER]
+                          inicia [SENDER]
+                          inicia [ALIVE].
+```
+
+> [RETRIEVER] Recibe :(401/500) = muere. 200 = elimina los ficheros.
+
+> [SENDER] igual que RETRIEVER.
+
+> [ALIVE] Si recibe un 401/500, lanza [LOGIN] y muere. Si recibe un (200;ALIVE), espera y vuelve a mandar petición. Si recibe un (200;REBOOT) avisa de que se va a reiniciar y se reinicia.
+
+Por tanto, una vez planificado, vamos a darle caña.
+
+## Viernes 25 de Octubre
+
+Vamos a ver como podemos obtener la dirección MAC del dispositivo, extrayéndolo:
+
+```zsh
+$ ifconfig | grep ether
+  ether XX:XX:XX:XX:XX:XX
+  ether XX:XX:XX:XX:XX:XX
+```
+De este modo, podemos extraerla y guardarla en un fichero.
+
+
+---
 
 
 # 📍 Milestones
