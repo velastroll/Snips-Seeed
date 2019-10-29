@@ -517,11 +517,79 @@ $ ifconfig | grep ether
   ether XX:XX:XX:XX:XX:XX
   ether XX:XX:XX:XX:XX:XX
 ```
+
 De este modo, podemos extraerla y guardarla en un fichero.
 
+```python
+import os;
+import time;
 
----
+macfile = "macfile.txt"
+comando = "ifconfig | grep ether > " + macfile
 
+os.system(comando) # execute command
+
+time.sleep(2) # wait to do more safe
+
+with open(macfile, "r") as file: # open file to read it
+    data = file.readline().replace('ether', '').replace("\t", '').replace("\n", '').replace(" ", '')
+
+with open(macfile, "w") as file: # open the same file to save the MAC
+    file.write(data)
+```
+
+De esta forma obtenemos un fichero `macfile.txt` donde tenemos registrada la dirección mac.
+
+Las contraseña se encriptará con el número: _42,503_.
+
+## Domingo 27 de Octubre
+
+Configuramos el servicio de login de administradores por parte del sistema, de modo que introduciendo sus datos, se le creen los tokens necesarios.
+
+> [POST] http://virtual.lab.infor.uva.es:65143/worker/login
+
+```json
+{
+	"user": "admin",
+	"password" : "laquesea"
+}
+```
+
+Y de tal envío, recibimos la respuesta del servidor
+
+```json
+{
+  "access_token": "Bearer aOs3eHPQfa3zMpRdhIyGQ2TbWSYCZgK1",
+  "refresh_token": "Bearer Ddk3T6Cxyu5fmghAgBMcxNQnHkZNsmRz"
+}
+```
+
+Para filtrar las URI públicas y privadas, se ha creado `src/config/GrantAccess.kt` quien permite acceso a una determinada URI en funcion del tipo de usuario que es, y ese usuario se comprueba a través del identificador asociado a sus tokens.
+
+## Lunes 27 de Octubre
+
+Se ha modificado el método de login de los dispositivos, de modo que al solicitar los tokens, se comprueba si la contraseña es corracta sin necesidad de acceder a la base de datos. Una vez comprobada, se guarda el dispositivo en la base de datos en caso de que nunca hubiese sido registrado y se añade una nueva fila a la tabla **status**, informando de qué dispositivo se ha conectado con petición de _login_, y a qué hora.
+
+## Martes 28 de Octubre
+
+Se intenta crear un servicio que obtenga todos los dispositivos si eres un trabajador, pero no se consigue hacer funcionar.
+Al final el fallo es que se estaba decodificando mal la contraseña de los dispositivos y por un fallo decía que era correcta, de modo que no se llegaban a registrar. Una vez solucionado, se añaden perfectamente en el registro.
+
+Se termina el servicio de recogida de todos los dispositivos mediante un usuario autenticado, y funciona perfectamente. De este modo, se verifica que está bien configurado el OAuth, y funcionando.
+
+Ya tenemos el servicio rest levantado para poder mostrar los dispositivos en la web de administración, con información acerca de su ultima conexión.
+
+> [get] http://virtual.lab.infor.uva.es:65143/worker/devices
+
+```json
+[
+    {
+        "device": "b8:27:eb:33:78:eb",
+        "state": "LOGIN",
+        "timestamp": "2019-10-29T20:02:47.435Z"
+    }
+]
+```
 
 # 📍 Milestones
 
@@ -535,9 +603,9 @@ De este modo, podemos extraerla y guardarla en un fichero.
 - [X] Crear una caché en el servidor para unas respuestas más rapidas. **19/10/2019**
 - [X] Configurar servidor de la escuela. **20/10/2019**
 - [X] Automatizar las peticiones `I'm alive!` del dispositivo. **23/10/2019**
-- [ ] Generar un usuario y contraseña para cada dispositivo.
-- [ ] protocolo OAuth.
-- [ ] DB para guardar el estado de cada dispositivo.
+- [X] Generar un usuario y contraseña para cada dispositivo. **27/10/2019**
+- [X] protocolo OAuth. **28/10/2019**
+- [X] DB para guardar el estado de cada dispositivo. **28/10/2019**
 - [ ] FRONTEND para ver el estado de cada dispositivo.
 - [ ] Servidor HTTPS
 - [ ] Registro de estadísticas en la parte del dispositivo.
