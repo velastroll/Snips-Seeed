@@ -508,6 +508,8 @@ Como ya funciona correctamente lo de ejecutar un script al reiniciarse, toca hac
 
 Por tanto, una vez planificado, vamos a darle caña.
 
+---
+
 ## Viernes 25 de Octubre
 
 Vamos a ver como podemos obtener la dirección MAC del dispositivo, extrayéndolo:
@@ -542,6 +544,8 @@ De esta forma obtenemos un fichero `macfile.txt` donde tenemos registrada la dir
 
 Las contraseña se encriptará con el número: _42,503_.
 
+---
+
 ## Domingo 27 de Octubre
 
 Configuramos el servicio de login de administradores por parte del sistema, de modo que introduciendo sus datos, se le creen los tokens necesarios.
@@ -566,9 +570,13 @@ Y de tal envío, recibimos la respuesta del servidor
 
 Para filtrar las URI públicas y privadas, se ha creado `src/config/GrantAccess.kt` quien permite acceso a una determinada URI en funcion del tipo de usuario que es, y ese usuario se comprueba a través del identificador asociado a sus tokens.
 
+---
+
 ## Lunes 27 de Octubre
 
 Se ha modificado el método de login de los dispositivos, de modo que al solicitar los tokens, se comprueba si la contraseña es corracta sin necesidad de acceder a la base de datos. Una vez comprobada, se guarda el dispositivo en la base de datos en caso de que nunca hubiese sido registrado y se añade una nueva fila a la tabla **status**, informando de qué dispositivo se ha conectado con petición de _login_, y a qué hora.
+
+---
 
 ## Martes 28 de Octubre
 
@@ -591,6 +599,40 @@ Ya tenemos el servicio rest levantado para poder mostrar los dispositivos en la 
 ]
 ```
 
+## Hasta el Martes 6 de Noviembre
+
+Se crean los servicios Web necesarios para **crear a personas**, relacionarlas con dispositivos específicos, y se desarrolla la web hasta dejar operativa una versión de prueba en la que aparecen los dispositivos registrados y a quién están asignados, al igual que una más interactiva respuesta de forma que cambia el color del dispositivo en función de cuánto tiempo lleva sin conectarse al sistema.
+_(Así escrito parece poco, pero ha sido mucho trabajo._)
+
+---
+
+## Martes 6 de Noviembre
+
+Hoy nos vamos a dentrar en la programación orientada a objetos en python, ya que la desconozco y con esto podríamos mejorar los servicios y expansibilidad de las funciones en la parte del dispositivo.
+Se ha estado trasteando y se ha conseguido cambiar la estructura de la parte del dispositivo, de una manera más orientada a objetos, y ahora el dispositivo es capaz de iniciar sesion, conectarse al sistema y enviar ping al servidor de manera automática con tan solo conectarlo a corriente, **siempre y cuando tenga una red wifi configurada**.
+
+---
+
+## Miercoles 7 de Noviembre
+
+Se ha cambiado al configuración del backend a la hora de autenticar usuarios, ya que se encontró un error a la hora de diferenciar a administradores y dispositivos por sus access tokens, al utilizar el mismo servidor OAuth. Ya ha sido reparado.
+
+---
+
+## Jueves 8 de Noviembre
+
+Se ha empezado la parte del front en la que se puede añadir usuarios al sistema, pero falta refinar la especificación:
+
+ > asignar a un usuario un CP en vez de un pueblo, y a cada pueblo sus CP, asi realizamos las acciones en funcion de CP.
+
+ Este cambio nos hace cambiar al estructura del core y sus tablas.
+
+## Domingo 10 de Noviembre
+
+Antes de finalizar la parte de añadir usuarios se va a realizar la de añadir pueblos y su código postal, ya que es requerido en la creación de los usuarios
+
+---
+
 # 📍 Milestones
 
 - [x] Conseguir que detecte lo escuchado - **30/09/2019**
@@ -599,14 +641,21 @@ Ya tenemos el servicio rest levantado para poder mostrar los dispositivos en la 
 - [x] Conseguir que hable castellano - **04/10/2019**
 - [x] Cambiar hotword - **13/10/2019**
 - [ ] Tarjeta sim en vez de wifi.
-- [ ] Estable el audio con fuentes de alimentación diferentes.
+- [X] Estable el audio con fuentes de alimentación diferentes. **29/10/2019**
 - [X] Crear una caché en el servidor para unas respuestas más rapidas. **19/10/2019**
 - [X] Configurar servidor de la escuela. **20/10/2019**
 - [X] Automatizar las peticiones `I'm alive!` del dispositivo. **23/10/2019**
 - [X] Generar un usuario y contraseña para cada dispositivo. **27/10/2019**
 - [X] protocolo OAuth. **28/10/2019**
 - [X] DB para guardar el estado de cada dispositivo. **28/10/2019**
-- [ ] FRONTEND para ver el estado de cada dispositivo.
+- [X] FRONTEND con inicio de sesión **29/12/2019**
+- [X] FRONTEND para ver el estado de cada dispositivo. **3/11/2019**
+- [X] BACKEND para crear usuarios **04/11/2019**
+- [X] BACKEND para relacionar usuarios y dispositivos **05/11/2019**
+- [X] Dispositivo: POO **06/11/2019**
+- [X] Dispositivo arranca y automáticamente se inicia sesión, o se crea un usuario si no está creado, y se mantienen enviando pings cada 5 minutos. **06/11/2019**
+- [X] FRONTEND para crear usuarios
+- [X] FRONTEND para relacionar usuarios y dispositivos
 - [ ] Servidor HTTPS
 - [ ] Registro de estadísticas en la parte del dispositivo.
 - [ ] Envío de estadísticas al servidor.
