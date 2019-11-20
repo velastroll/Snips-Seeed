@@ -627,9 +627,46 @@ Se ha empezado la parte del front en la que se puede añadir usuarios al sistema
 
  Este cambio nos hace cambiar al estructura del core y sus tablas.
 
+---
+
 ## Domingo 10 de Noviembre
 
-Antes de finalizar la parte de añadir usuarios se va a realizar la de añadir pueblos y su código postal, ya que es requerido en la creación de los usuarios
+Antes de finalizar la parte de añadir usuarios se va a realizar la de añadir pueblos y su código postal, ya que es requerido en la creación de los usuarios.
+
+Se ha añadido un script que añade todas las provincias automáticamente, y posteriormente los servicios de crear pueblos, añadir usuarios a esos pueblos, y obtener la lista completa de provincias con sus respectivos pueblos, usuarios y dispositivos asociados.
+
+Se ha dejado todo muy bien preparado en el BACKEND para ultimar detalles en la parte del FRONTEND y dejarlo ya medio terminado.
+
+---
+
+## Lunes 11 de Noviembre
+
+Se ha procedido al esbozo en papel de los posibles diseños de las páginas y botones.
+Se procede a su elaboración.
+
+---
+
+## Hasta el 20 de Noviembre
+
+- Se ha creado la parte del front y del back para crear usuarios, y que se asocie automaticamnete a los pueblos al establecer un codigo postal, al igual que al crear un pueblo que te lo meta en la provincia mediante su codigo postal. De esta forma es fácil e intuituvo tener todo bien organizado.
+
+- Falta hacer mejor visible la parte del front, ya que está sin terminar. Tras muchos esbozos no se ha llegado a un diseño en claro de como va a ser la página. Almacenaré todos los esbozos para posible documentación del TFG a la hora de implementar un diseño de una página (Es de lo que dimos en IPC).
+
+- Tras varios replanteamientos de como organizar las tareas que se van a enviar a los dispositivos, se ha llegado a un diseño que puede ser válido.
+Se ha implementado  los servicios de **Tareas** que se asignan a determinados dispositivos, dejando registro de si están creadas, ya hechas, no se han podido realizar, o qué. Cada tarea tiene asociada un evento. Un **Evento** tiene un nombre, por ejemplo _REBOOT_ y un contenido, que sería _sudo reboot_ para que lo ejecute el dispositivo. Se han creado los servicios para los trabajadores, pero aún sin probarse en los dispositivos, cosa que se hará mañana.
+Ha sido un tedioso trabajo estos últimos 10 días, ya que hay mucho que cambiar tanto en el dispositivo, como en el backend, como en el front.
+
+Pasos a seguir el próximo día:
+
+1. Probar la creación de tareas y eventos mediante Postman.
+2. Mostrar de manera básica las tareas y eventos en la web.
+3. Implementar la creación de tareas o eventos en la web.
+4. Gestionar el muestreo de tareas y estados del dispositivo.
+5. Devolver tareas al dispositivo si tiene alguna que hacer.
+6. Implementar la lectura de las tareas en el dispositivo.
+7. Implementar la recepcion de la respuesta de las tareas en el backend.
+8. Implementar la respuesta de las tareas en el dispositivo
+9. Comprobar en la web que funciona
 
 ---
 
