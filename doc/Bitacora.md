@@ -670,6 +670,32 @@ Pasos a seguir el próximo día:
 
 ---
 
+## Jueves 21 de Noviembre
+
+Tras dos horas de prueba y error, se ha conseguido testear las funciones creadas ayer con postman, y configurar para que devuelva al dispositivo las tareas que tiene pendientes.
+
+- **[get] device/alive** : modificado para que compruebe tareas pendientes => 200: No hay, 300: devuelve lista
+- **[post] worker/event** : Se le envia `{ "name" : "REBOOT", "content": "sudo reboot" }` para crear un nuevo evento.
+- **[post] worker/tasks** : Se le envia `{"device" : "b8:XX:eb:XX:eb", "from": "YY-MM-DDTHH:MM:SS.MMMZ", "to" : "YY-MM-DDTHH:MM:SS.MMMZ"}` y se recibe las tareas que tiene entre esas fechas. las que no tienen el campo **"datetime"** son las que están sin completar.
+- **[post] worker/task** :  Se le envía `{"device" : "b8:XX:eb:XX:eb", "event": "REBOOT"}` para crear una nueva tarea.
+
+Se ha añadido en el dispositivo una salida para ver como se procesan las tareas al recibirlas con la petición de ALIVE: Funciona correctamente.
+1. ~~Probar la creación de tareas y eventos mediante Postman.~~
+2. Mostrar de manera básica las tareas y eventos en la web.
+3. Implementar la creación de tareas o eventos en la web.
+4. Gestionar el muestreo de tareas y estados del dispositivo.
+5. ~~Devolver tareas al dispositivo si tiene alguna que hacer.~~
+6. ~~Implementar la lectura de las tareas en el dispositivo.~~
+7. Implementar la recepcion de la respuesta de las tareas en el backend.
+8. Implementar la respuesta de las tareas en el dispositivo
+9. Comprobar en la web que funciona
+
+al que añadiremos el punto:
+
+- 6.2. Crear el administrador de tareas en el dispositivo, en función del tipo de tarea que sea.
+
+---
+
 # 📍 Milestones
 
 - [x] Conseguir que detecte lo escuchado - **30/09/2019**
