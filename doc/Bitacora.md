@@ -680,6 +680,7 @@ Tras dos horas de prueba y error, se ha conseguido testear las funciones creadas
 - **[post] worker/task** :  Se le envía `{"device" : "b8:XX:eb:XX:eb", "event": "REBOOT"}` para crear una nueva tarea.
 
 Se ha añadido en el dispositivo una salida para ver como se procesan las tareas al recibirlas con la petición de ALIVE: Funciona correctamente.
+
 1. ~~Probar la creación de tareas y eventos mediante Postman.~~
 2. Mostrar de manera básica las tareas y eventos en la web.
 3. Implementar la creación de tareas o eventos en la web.
@@ -693,6 +694,51 @@ Se ha añadido en el dispositivo una salida para ver como se procesan las tareas
 al que añadiremos el punto:
 
 - 6.2. Crear el administrador de tareas en el dispositivo, en función del tipo de tarea que sea.
+
+## Viernes 22 de Noviembre
+
+Se ha planteado un supuesto práctico para que se puedan realizar las tareas nuevas y así integrar nuevas posibilidades de forma remota:
+
+[STEP 1]
+- Se le manda hacer la tarea REBOOT.
+- Comprueba si tiene ./task/reboot/init.sh:
+
+  - SÍ: lo ejecuta.
+
+  - NO: [GET] /download/reboot
+
+  ```json
+          [{
+            "name" : "init.sh",
+            "content" : "sudo reboot"
+          }]
+  ```
+
+  Otro ejemplo. La tarea es EXAMPLE. Comprueba si tiene ./task/example/init.sh
+  
+  - SÍ: lo ejecuta.
+  
+  - NO: [GET] /download/example
+
+  ```json
+        [{
+          "name" : "init.sh",
+          "content" : "sudo reboot"
+        }, {
+          "name" : "example.py",
+          "content" : "<Python code>"
+        }]
+  ```
+
+✅ El sistema para organizar las tareas está guay.
+
+❌ El sistema para crear esas tareas sería muy laborioso.
+
+👍🏻 Seguir ese sistema de tareas pero **que se guarden en un repo**, y que simplemente se haga un `git pull` del repo específico en el que estén las tareas subidas.
+
+📦 Al final se ha organizado todas las acciones en carpetas, p.e. `tasks/REBOOT`, donde está `/tasks/REBOOT/init.sh`, de modo que el nombre de la carpeta es el nombre del comando, que es el **evento** que se crea desde la administración.
+Dentro de `REBOOT` tenemos el archivo python `/REBOOT/Reboot.py` que es iniciado con `init.sh` que realiza el evento e informa al sistema acerca de ello.
+
 
 ---
 
