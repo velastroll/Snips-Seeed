@@ -739,6 +739,25 @@ Se ha planteado un supuesto práctico para que se puedan realizar las tareas nue
 📦 Al final se ha organizado todas las acciones en carpetas, p.e. `tasks/REBOOT`, donde está `/tasks/REBOOT/init.sh`, de modo que el nombre de la carpeta es el nombre del comando, que es el **evento** que se crea desde la administración.
 Dentro de `REBOOT` tenemos el archivo python `/REBOOT/Reboot.py` que es iniciado con `init.sh` que realiza el evento e informa al sistema acerca de ello.
 
+## Sábado 23 de Noviembre
+
+Se ha modificado la página de forma que deje enviar tareas a los dispositivos, ademas de mostrar cada tarjeta de dispositivo de diferente color en función de si está ejecutando una tarea en ese momento.
+También deja ver qué taresa están pendientes.
+
+## Domingo 24 de Noviembre
+
+Se ha estado arregladno las vistas de Usuario y de Provinicias, que tenia botones que no mostraban bien el contenido al igual que procesar bien las tareas y toda la parte de experiencia de usuario para quefuncione bien.
+
+Se ha estado viendo como meter gráficos en función de las estadísticas, pero como aún no tenemos recogidas las estadisiticas, se va a dejar esto apartado, aunque ya se ha hecho un diseño válido, de modo que sea la página de cada **DISPOSITIVO**, donde se puede assignar y quitar un usuario, y ver sus estadisticas del año que se desee, del mes y o del día.
+
+No está implementado pero se ha hecho en papel todo el diseño para ver cómo mostrar los logs, los ultimos estados, y la asignación de tareas.
+
+La idea es que esta página pueda servir para varios apartados:
+
+- Estadisticas y acciones sobre un dispositivo especifico
+- Estadisticas y acciones sobre un pueblo (codigo postal) específico.
+
+También, se ha estado replanteando como hacer para meter al dispositivo la **contraseña del wifi** de su casa, y se ha optado que la mejor opcion es habilitar una página web para que el usuario pueda entrar, pero una página muy simple, donde pueda ver sus estadisticas, y configurar la contraseña del wifi.
 
 ---
 
