@@ -695,6 +695,8 @@ al que añadiremos el punto:
 
 - 6.2. Crear el administrador de tareas en el dispositivo, en función del tipo de tarea que sea.
 
+---
+
 ## Viernes 22 de Noviembre
 
 Se ha planteado un supuesto práctico para que se puedan realizar las tareas nuevas y así integrar nuevas posibilidades de forma remota:
@@ -739,10 +741,14 @@ Se ha planteado un supuesto práctico para que se puedan realizar las tareas nue
 📦 Al final se ha organizado todas las acciones en carpetas, p.e. `tasks/REBOOT`, donde está `/tasks/REBOOT/init.sh`, de modo que el nombre de la carpeta es el nombre del comando, que es el **evento** que se crea desde la administración.
 Dentro de `REBOOT` tenemos el archivo python `/REBOOT/Reboot.py` que es iniciado con `init.sh` que realiza el evento e informa al sistema acerca de ello.
 
+---
+
 ## Sábado 23 de Noviembre
 
 Se ha modificado la página de forma que deje enviar tareas a los dispositivos, ademas de mostrar cada tarjeta de dispositivo de diferente color en función de si está ejecutando una tarea en ese momento.
 También deja ver qué taresa están pendientes.
+
+---
 
 ## Domingo 24 de Noviembre
 
@@ -758,6 +764,120 @@ La idea es que esta página pueda servir para varios apartados:
 - Estadisticas y acciones sobre un pueblo (codigo postal) específico.
 
 También, se ha estado replanteando como hacer para meter al dispositivo la **contraseña del wifi** de su casa, y se ha optado que la mejor opcion es habilitar una página web para que el usuario pueda entrar, pero una página muy simple, donde pueda ver sus estadisticas, y configurar la contraseña del wifi.
+
+---
+
+## Martes 26 de Noviembre
+
+Tras una reunión con el tutor se ha hablado sobre qué le falta o qué diseños podrían ser útiles:
+
+1. Parametrización: Tener un apartado de configuración de valores generales podr defecto, que más tarde se puedan cambiar individualmente para cada dispositivo.
+Entre ellos están los **periodos** de ping, lsa **direcciones** tanto de web, como de servidor, o de repositorio para actualizarse.
+2. Añadir la opcion de manejar usuarios: Activos, congelados, y borrado permanente.
+3. Ordenación ascendente y descendente de los dispositivos en función de su último alive, su último intent, el último evento realizado, o la ultima fecha de relación con usuarios.
+4. Añadir un mapa desde donde sea más visible ver dónde están los dispositivos.
+
+---
+
+## Miercoles 27 de Noviembre
+
+Se ha estado implementando el mapa.
+
+> Se está utilizanfo leaflet ya que es de open source al igual que OpenStreetMaps para no depender de licencias en uso privado.
+También se está utilizando Leaflet con ESRI, para la geolocalización reversible, de forma que podamos obtener el codigo posta, calle y toda la información a través de una latitud y longitud.
+
+Para todo lo visto ayer, va a ser útil cambiar la obtención de los dispositivos, de forma que se obtenga el siguiente formato y así sea más facil la ordenación.
+Cada atributo array tendrá un máximo de 5 elementos.
+
+```json
+[
+    {
+        "device": "b8:27:eb:33:78:eb",
+        "last_status": [{
+          "timestamp": "2019-10-29T20:02:47.435Z"
+        }],
+        "last_events": [{
+          "event": "REBOOT",
+          "timestamp": "2019-10-29T20:02:47.435Z"
+        }],
+        "last_intents": [{
+          "timestamp": "2019-10-29T20:02:47.435Z",
+          "intent": "Contacto",
+          "slots": [{"slot": "Fax"}],
+          "accuracy": 0.94
+        }],
+        "relation": {
+          "name": "Alvaro Velasco",
+          "nif": "1242XXXXG",
+          "from": "2019-10-29T20:02:47.435Z",
+          "position": {
+            "latitude" : 0,
+            "longitude" : 0,
+            "postcode" : 47140
+          }
+        }
+    }
+]
+```
+
+---
+
+## Jueves 28 de Noviembre
+
+Se procede al diseño de los iconos para el mapa.
+> Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+> Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+
+---
+
+## Hasta el 04 de Diciembre
+
+Esta semana por temas de trabajo no se ha podido hacer casi nada:
+
+- Se ha cambiado la base de datos para dar cabida a que cada localidad tenga una ubicación.
+- Se ha cambiado la forma en la que se añadían localidades: ahora simplemente se da click en el mapa (pudiendo buscar con la lupa) y se añade la localidad.
+
+Se va a proceder ahora a comprobar si afecta a la creación de nuevos usuarios: no parece afectar, al introducir el CP te sigue indicando el pueblo.
+
+Qué hacer:
+
+- Añadir la opción de relacionar usuarios con dispositivos.
+- Mostrar los pueblos en el mapa.
+- Mostrar los dispositivos en el mapa.
+- Añadir la opción de acabar con la relación de los usuarion y dispositivo.
+
+---
+
+## Jueves 5 de Diciembre
+
+Se ha cambiado el formato del objeto **Relacion** de modo que ahora incluye una posicion. De esta amnera ahora se han posicionado los dispositivos en su ubicación. En caso de que no tengan relación, se ponen en la costa del Atlántico, ya que así es más visual, y aparecen en otro color.
+Cada dispositivo tiene un popup que muestra información sobre él, teniendo la opcion de ir a la página de estadísticas de cada uno:
+
+ > [X] Mejorar esta opción.
+
+La página de estadísticas ya muestra las tareas pendientes, y tiene un diseño muy robusto, pero está al 30%. Hoy se mejorará:
+
+- Se añadirá la opcion de asignar/desasignar dispositivos (postpuesto de ayer)
+- Se añadirá la opción de ordenar nuevas tareas.
+- Se mostrarán las últimas tareas realizadas.
+
+---
+
+## Viernes 6 de Diciembre
+
+Ya se muestran las tareas realizadas, las nuevas, y se distingue las estadisticas y 'cards' en función de:
+
+- cargar usuario que no tiene dispositivo asociado.
+- cargar usuario que tiene dispositivo asociado.
+- cargar dispositivo que no está relacionado con nadie
+- cargar dispositivo que sí que está relacionado.
+
+La vista tiene una mejor visión, siendo todo más simple.
+Se ha añadido la opción de poder asignar un dispositivo a un usuario desde el panel del usuario, mostrando un modal donde aparecen los dispositivos que se han actualizado más recientemente y no estén asignados a nadie, de este modo el primero que aparezca será el que está encendido a la espera de ser asignado.
+
+Se ha encontrado un fallo:
+
+> [ ] El usuario 'PEdro Pepin' no tiene asociado ningun dispositivo. Se lo asocies o no, en la página de la lista de todos los usuarios sigue sin salir, aunque en la de las estadisticas sí que aparece.
 
 ---
 
@@ -788,9 +908,10 @@ También, se ha estado replanteando como hacer para meter al dispositivo la **co
 - [ ] Registro de estadísticas en la parte del dispositivo.
 - [ ] Envío de estadísticas al servidor.
 - [ ] Mostrar estadísticas en la web.
+- [X] Servidor manda acciones al dispositivo en el cuerpo de las respuestas al `I'm alive`. _(Reboot)_ **23/11/2019**
+- [X] Dispositivo realiza las acciones que le manda el servidor. _(Reboot)_ **23/11/2019**
+- [ ] ~~Configurar el wifi con el diálogo~~.
+- [ ] Web para configurar el wifi.
 - [ ] Mensaje de bienvenida al iniciar el dispositivo.
-- [ ] Servidor manda acciones al dispositivo en el cuerpo de las respuestas al `I'm alive`. _(Reboot)_
-- [ ] Dispositivo realiza las acciones que le manda el servidor. _(Reboot)_
 - [ ] arranque de la máquina: que hable al encenderse.
 - [ ] Conseguir diálogo simple con el dispositivo.
-- [ ] Configurar el wifi con el diálogo.
