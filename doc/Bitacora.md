@@ -877,7 +877,150 @@ Se ha añadido la opción de poder asignar un dispositivo a un usuario desde el 
 
 Se ha encontrado un fallo:
 
-> [ ] El usuario 'PEdro Pepin' no tiene asociado ningun dispositivo. Se lo asocies o no, en la página de la lista de todos los usuarios sigue sin salir, aunque en la de las estadisticas sí que aparece.
+> [x] El usuario 'PEdro Pepin' no tiene asociado ningun dispositivo. Se lo asocies o no, en la página de la lista de todos los usuarios sigue sin salir, aunque en la de las estadisticas sí que aparece.
+
+---
+
+## Sábado 7 de Diciembre
+
+Se ha arreglado el fallo en la parte del backend: si encontraba varias relaciones devolvía null, y se ha sustituido por la opción de que devuelva solo la relación que esté sin terminar.
+
+Se ha centrado al posicion de los iconos en el mapa para que apiunten exactasmente a la posición, y se han agrupado  los dispositivos en un cluster, de modo que sea una mejor visualización.
+
+Antes de empezar con la parametrización de los campos del dispositivo vamos a dejar bien visible la página de estadísiticas de modo que sea responsible web design.
+
+---
+
+## Domingo 8 de Diciembre
+
+La parte del front nos retrasa más de lo esperado, pero ya se ha dejado algo viable.
+Cambiamos la visión de USERS, modificando las b-col por una tabla.
+
+Hoy comenzamos con la parametrización, donde encontramos de momento dos posibles campos:
+
+1. Cada cuanto tiempo se hace ping.
+2. De donde se recuperan los ficheros (url del servidor)
+3. Contraseña.
+
+Lo primero es plantear cómo gestionarlo: Cuando un dispositivo inicia sesión, se le pasa un nuevo atributo junto a los tokens con datos. De esta forma, cada vez que queramos cambiarle los valores por defecto al dispositivo, tan solo hay que reiniciarlo.
+
+❌ se ha hecho así pero sería un problema, asi que lo mejor va a ser que cambiar los datos sea un nuevo evento.
+
+Evento **CONF** cuyo flow en el DISPOSITIVO es:
+
+1. Le llega el evento _CONF_
+2. Actualiza el fichero.
+3. Se reinicia el dispositivo.
+
+Evento **CONF** cuyo flow en el SERVIDOR es:
+
+- Cada dispositivo tiene una configuración fija, y una pendiente. Una vez que el dispositivo ha confirmado la configuración (devuelve el identificador de la ultima configuración que se le ha mandado), se actualiza la configuración fija, se borra la pendiente, y se finaliza el evento.
+
+  1. Generar nueva configuración pendiente (guardar)
+  2. Generar evento (añadir evento)
+  3. *El dispositivo marca el evento como que lo está realizando, por lo que el evento ya no está en tareas pendientes.
+  4. El dispositivo cambia la configuración.
+  5. Dispositivo avisa al servidor sobre que ha terminado de configurarlo (manda el timestamp).
+  6. El servidor marca la configuración como no pendiente (pending = false)
+
+Evento **CONF** en la web:
+
+- Existe la posibilidad de modificar la configuración, de modo que se crea la nueva configuración una vez se da a GUARDAR, que es cuando se genera el evento y se crea la pendiente.
+- Aparecerá la configuración normal, con la pendiente al lado en rojo en caso de que exista.
+- Si se quiere eliminar, se cancela el evento.
+
+Se ha conseguido hacer la parte del servidor y la parte del dispositivo. Para la parte del disopsitivo se ha tardado más de la cuenta por culpa de la forma de parsear los datos en python, ya que si los guardamos en formato unicode, luego no nos deja leerlos bien (esto tiene que tener alguna solucion pero no lo he encontrado).
+
+De momento, la unica forma de que funcionase ha sido guardando en el fichero el json completo recibido como respuesta, y a la hora de usar la configuración, hay que leer el fichero y luego buscar el parametro dentro del atributo *body*, ya que si en el fichero guardabamos solo el atributo body, se guardaba en unicode.
+
+> **DEVICE**:
+[GET] URL/device/conf
+
+Responde a un dispositivo su configuración: puede estar pendiente (si es nueva) o no (si es la vieja).
+
+```json
+{
+  "device" : "El que sea",
+  "timestamp" : "2019-12-08T17:10:00.000000Z",
+  "pending" : true,
+  "body" : {
+    "sleep_sec": 15
+  }
+}
+```
+
+> **DEVICE** [PUT] URL/device/conf/:timestamp
+
+Lo envia el dispositivo para avisar al servidor sobre que ha actualizado su configuración a los datos recibidos que concuerdan con el _timestamp_.
+
+> **WORKER** [POST] URL/worker/conf
+
+Envía la nueva configuración de un dispositivo específico:
+
+```json
+{
+  "device" : "Identificador del dispositivo, o codigo postal, o 'GLOBAL'",
+  "body" : {
+    "sleep_sec": 15
+  }
+}
+```
+
+---
+
+## Lunes 9 de Diciembre
+
+Se termino de arreglar la aprte del dispositivo que llevaba la parametrización.
+
+Una vez puestos se va a crear el evento de apagar el dispositivo, ya que vamos a proceder a cambiar la tarjeta SD entre varios, y así hacerlo de manera más segura.
+
+1. Creamos el evento: ✅ OFF
+2. Creamos la tarea; ✅
+3. Comprobamos que funciona: ✅
+
+Se ha cambiado el estilo de las tarjetas de dispositivo, de modo que si el último estado ha sido el de OFF indica que ha sido apagado por el administrados y el cliente aun no lo ha vuelto a encender, de modo que se muestra un color grisaceo, pudiendo distinguirlo mejor, en caso de que necesitemos contactar con el cliente para que lo encienda.
+
+---
+
+## Martes 10 de Diciembre
+
+Se han editado unos nuevos iconos ya que los viejos era un poco rancios, aunque los nuevos tampoco me termina de gustar como quedan en el mapa, ya que la sondas de la voz se acoplan y no se diferencian.
+
+Procedemos hoy a crear el apartado de la parametrización desde la web: cómo mostrarlo y organizarlo mejor.
+
+Existe una configuración global, una por localidades, y  un máximo de dos para cada dispositivo.
+Las de cada dispositivo, una tiene que estar pendiente, y la otra no. Cuando se ejecute la actualización, la pendiente dejará de estarlo, y la antigua será eliminada.
+
+Cuando se ejecute el **evento CONF** de un dispositivo específico, se comprobará cual es más actual de los tres campos: El global, el de la localidad, o el pendiente del dispositivo. El más actual será el que se envíe al dispositivo, y será el que sustituya la configuración no-pendiente por esa otra configuración, actualizando el timestamp, que será quien haga de identificador.
+
+Se ha puesto que al administrador, cuando pregunte por un dispositivo le mande 4 configuraciónes: la global, la de la localidad, la pandiente y la actual. El administrador podrá solicitar la de un dispositivo concreto (a+p+l+g), la de la localidad (l+g) o solo la global (g).
+
+---
+
+## Miercoles 11 de Diciembre
+
+Se ha hecho el diseño de las vistas de la página de ajustes, aunque falta integrarlo con el servidor.
+Tambien se ha trasteado sobre los test del  backend y se ha visto que hay que cambiar la estructura si se desea implementar, de modo que los controladores tengan acceso a un objecto DAO en vez de una llamada estática, para poder cambiar estos DAO por mocks.
+
+Se procede a hacer las pruebas del nuevo diseño de la configuración:
+
+- Devolver las confs y al dispositivo solo la más reciente: ✅
+- Actualizar la actual cuando el dispositivo acutalice: ✅
+
+---
+
+## Jueves 18 de Diciembre
+
+Tras una larga revisión se han encontrado 4 puntos críticos a mejorar que hace que cambie toda la estructura:
+
+1. Poner inversión de dependencias.
+2. INyectarlas con Koin.
+
+Parece chungo pero ya lo he ido elaborando y ya he visto como va, eso sí, se necesaitan unas 10h para cambiarlo todo.
+Empezaremos hoy temrinando de integrar la configuración de los parametros a través de la web, que lleva una semana pendiente.
+
+Se ha integrado y se han corregido fallos a la hora de confirmar la configurción tomada.
+También se ha arreglado al web de forma que muestre bien cuál es la próxima configuración pendiente, al igual que poder añadir nuevas.
 
 ---
 
