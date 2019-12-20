@@ -1024,6 +1024,11 @@ También se ha arreglado al web de forma que muestre bien cuál es la próxima c
 
 ---
 
+## Viernes
+
+Se ha configurado para que envíe tareas desde la pagina de settings, ya sea por dispositivo, por localidad o a todos.
+Para ello se ha modificado también el servidor, de modo que al enviar una tarea, en función de el nombre del valor **device** se la manda a un único dispositivo, a todos los de una localidad, o a todos.
+
 # 📍 Milestones
 
 - [x] Conseguir que detecte lo escuchado - **30/09/2019**
