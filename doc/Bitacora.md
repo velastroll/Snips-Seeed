@@ -1009,7 +1009,7 @@ Se procede a hacer las pruebas del nuevo diseño de la configuración:
 
 ---
 
-## Jueves 18 de Diciembre
+## Jueves 19 de Diciembre
 
 Tras una larga revisión se han encontrado 4 puntos críticos a mejorar que hace que cambie toda la estructura:
 
@@ -1024,10 +1024,53 @@ También se ha arreglado al web de forma que muestre bien cuál es la próxima c
 
 ---
 
-## Viernes
+## Viernes 20 de Diciembre
 
 Se ha configurado para que envíe tareas desde la pagina de settings, ya sea por dispositivo, por localidad o a todos.
 Para ello se ha modificado también el servidor, de modo que al enviar una tarea, en función de el nombre del valor **device** se la manda a un único dispositivo, a todos los de una localidad, o a todos.
+
+---
+
+## Jueves 26 de Diciembre
+
+Se ha cambiado toda la estructura de modo que ahora sigue el principio de inversión de dependencias.
+Las dependencias están inyectadas con Koin, que es un framework de Kotlin, que en realidad es un Service Locator.
+
+---
+
+## Sabado 28 de Diciembre
+
+Se va a intentar guardar en número de intents en ficheros, a la hora de que se ejecuten.
+De este modo, se podrá enviar el fichero en diariamente, haciendo un informe de estadísticas:
+
+Lo primero, ver como es la estructura de los mensajes enviados por snips, con la finalidad de poder guardarlos en la base de datos:
+https://docs.snips.ai/reference/dialogue#intent-classification
+
+```js
+payload : {
+  sessionId: "Session of the intent detection",
+  customData: "Optional String",
+  siteId : "Site where the user interaction took place",
+  input : "The user input that has generated this intent",
+  intent : {
+    intentName : "Name of the detected intent",
+    confidenceScore : "Number between 0 and 1"
+  },
+  slots : [
+    {
+      confidence : Number,
+      raw_value : "String: Raw value of the slot.",
+      entity : "The entity slot",
+      slotName : "Name of the slot"
+    }
+  ]
+}
+```
+
+Se esta planteando la posibilidad de enviar al servidor la información del slot directamente, de modo que el servidor pueda mostrar las estadísticas.
+Como en este TFG no se va a entrar mucho en la parte del dispositivo para que el siguiente estudiante lo elabore más, dejamos a su elección cuándo enviar los datos al servidor, pudiendo guardarlos en caché, y enviandolos más tarde.
+
+---
 
 # 📍 Milestones
 
